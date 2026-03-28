@@ -10,8 +10,6 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "backend/server.js" },
-    { "src": "/(.*)", "dest": "frontend/$1" }
-  ]
+  { "src": "/favicon.ico", "dest": "frontend/favicon.ico" },
+
 }
