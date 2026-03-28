@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antigravity Auditor – Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>Antigravity Auditor</h1>
+    <select id="accountSelect" class="account-select">
+      <option value="sp_pericias">SP Perícias</option>
+      <option value="liftbras">Liftbras</option>
+      <option value="cliente_x">Cliente X</option>
+    </select>
+  </header>
+
+  <main class="dashboard">
+    <section class="card status-card">
+      <h2>Status de Saúde</h2>
+      <div id="healthStatus" class="status-icons">
+        <!-- Icons will be injected by app.js -->
+      </div>
+    </section>
+
+    <section class="card opportunities-card">
+      <h2>Oportunidades de Otimização</h2>
+      <ul id="optimizations" class="list"></ul>
+    </section>
+
+    <section class="card waste-card">
+      <h2>Alerta de Desperdício</h2>
+      <ul id="wasteAlerts" class="list"></ul>
+    </section>
+
+    <section class="card log-card">
+      <h2>Log de Ações</h2>
+      <pre id="actionLog" class="log"></pre>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

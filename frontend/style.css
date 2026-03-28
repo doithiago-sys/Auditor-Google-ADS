@@ -1,0 +1,125 @@
+/* style.css – Premium dark theme with glassmorphism */
+
+:root {
+  --bg-color: hsl(210, 30%, 12%);      /* deep dark gray */
+  --card-bg: hsla(210, 30%, 20%, 0.6); /* semi‑transparent for glass effect */
+  --accent: hsl(210, 70%, 55%);        /* vibrant dark‑blue */
+  --text-primary: hsl(0, 0%, 95%);
+  --text-secondary: hsl(0, 0%, 70%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 1rem 2rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.account-select {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  flex: 1;
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.card h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.status-icons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.status-icons .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+}
+
+.icon.green { background: #28a745; }
+.icon.yellow { background: #ffc107; }
+.icon.red { background: #dc3545; }
+
+.list {
+  list-style: disc inside;
+  margin-left: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.log {
+  background: rgba(0,0,0,0.2);
+  padding: 0.8rem;
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
