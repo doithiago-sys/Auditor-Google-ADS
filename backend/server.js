@@ -2,6 +2,7 @@
 
 const express = require('express');
 const path = require('path');
+
 // Simple in‑memory log store (no native dependencies)
 const logs = [];
 
@@ -13,20 +14,25 @@ const PORT = process.env.PORT || 3000;
 // Serve static frontend (Vercel will handle this, but for local dev we serve it)
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
-// Simple in‑memory SQLite DB (file persisted in project root)
-const db = new sqlite3.Database(':memory:');
+/**
+ * Helper to persist a log entry in the in‑memory array.
+ * @param {string} account
+ * @param {string} event
+ * @param {any} details
+ */
+function addLog(account, event, details) {
+  logs.push({
+    id: logs.length + 1,
+    account,
+    timestamp: Date.now(),
+    event,
+    details,
+  });
+}
 
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    account TEXT,
-    timestamp INTEGER,
-    event TEXT,
-    details TEXT
-  )`);
-});
-
-// Dummy data generator – replace with real audit logic later
+/**
+ * Dummy data generator – replace with real audit logic later
+ */
 function getDummyStatus(account) {
   return {
     health: {
@@ -36,16 +42,16 @@ function getDummyStatus(account) {
     optimizations: [
       "Trocar título 2 do anúncio X por 'Laudo com Validade Jurídica'",
       "Adicionar termo 'Engenheiro' na descrição do anúncio Y",
-      "Melhorar tempo de carregamento da página Z"
+      "Melhorar tempo de carregamento da página Z",
     ],
     waste: [
-      "Palavra-chave 'preço barato' gerou 120 cliques sem conversão",
-      "Termo 'oferta' não converteu – sugerir negativação"
+      "Palavra‑chave 'preço barato' gerou 120 cliques sem conversão",
+      "Termo 'oferta' não converteu – sugerir negativação",
     ],
     log: [
       { timestamp: Date.now() - 60000, message: 'Auditoria concluída' },
-      { timestamp: Date.now() - 30000, message: 'Alerta de 404 detectado em /exemplo' }
-    ]
+      { timestamp: Date.now() - 30000, message: 'Alerta de 404 detectado em /exemplo' },
+    ],
   };
 }
 
@@ -53,18 +59,20 @@ function getDummyStatus(account) {
 app.get('/api/status', (req, res) => {
   const account = req.query.account || 'default';
   const status = getDummyStatus(account);
-  // Persist a log entry (for demo purposes)
-  const stmt = db.prepare('INSERT INTO logs (account, timestamp, event, details) VALUES (?,?,?,?)');
-  stmt.run(account, Date.now(), 'status_fetch', JSON.stringify(status));
-  stmt.finalize();
+
+  // Persist a log entry (demo purposes) – using the in‑memory array
+  addLog(account, 'status_fetch', JSON.stringify(status));
+
   res.json(status);
 });
 
 // Start scheduler (placeholder – real audit jobs will be added later)
-scheduleAudits(app, db);
-// OAuth callback – recebe o código de autorização do Google
+// Pass the in‑memory logs array instead of a DB object
+scheduleAudits(app, logs);
+
+/* OAuth callback – recebe o código de autorização do Google */
 app.get('/api/oauth/callback', (req, res) => {
-  const { code, state } = req.query;   // `code` é o token temporário
+  const { code, state } = req.query; // `code` é o token temporário
   // Aqui você trocaria o `code` por um access_token usando a API do Google
   // Por enquanto, apenas exibe o código recebido:
   res.send(`
@@ -74,7 +82,6 @@ app.get('/api/oauth/callback', (req, res) => {
     <p>Agora você pode trocar esse código por um access token no seu fluxo backend.</p>
   `);
 });
-
 
 app.listen(PORT, () => {
   console.log(`Antigravity Auditor backend listening on port ${PORT}`);
