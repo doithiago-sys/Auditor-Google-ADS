@@ -2,7 +2,9 @@
 
 const express = require('express');
 const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
+// Simple in‑memory log store (no native dependencies)
+const logs = [];
+
 const { scheduleAudits } = require('../utils/scheduler');
 
 const app = express();
