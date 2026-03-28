@@ -12,7 +12,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Serve static frontend (Vercel will handle this, but for local dev we serve it)
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
+// Serve favicon explicitly
+app.use('/favicon.ico', express.static(path.join(__dirname, '..', 'frontend', 'favicon.ico')));
+
 
 /**
  * Helper to persist a log entry in the in‑memory array.
