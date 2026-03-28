@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // Simple in‑memory SQLite DB (file persisted in project root)
-const db = new sqlite3.Database(path.join(__dirname, 'audit_logs.sqlite'));
+const db = new sqlite3.Database(':memory:');
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS logs (
@@ -60,6 +60,19 @@ app.get('/api/status', (req, res) => {
 
 // Start scheduler (placeholder – real audit jobs will be added later)
 scheduleAudits(app, db);
+// OAuth callback – recebe o código de autorização do Google
+app.get('/api/oauth/callback', (req, res) => {
+  const { code, state } = req.query;   // `code` é o token temporário
+  // Aqui você trocaria o `code` por um access_token usando a API do Google
+  // Por enquanto, apenas exibe o código recebido:
+  res.send(`
+    <h2>OAuth Callback recebido</h2>
+    <p><strong>Code:</strong> ${code}</p>
+    <p><strong>State:</strong> ${state || '—'}</p>
+    <p>Agora você pode trocar esse código por um access token no seu fluxo backend.</p>
+  `);
+});
+
 
 app.listen(PORT, () => {
   console.log(`Antigravity Auditor backend listening on port ${PORT}`);
