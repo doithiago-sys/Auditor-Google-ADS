@@ -5,7 +5,6 @@
     { "src": "backend/server.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/favicon.ico", "dest": "frontend/favicon.ico" },
     { "src": "/api/(.*)", "dest": "backend/server.js" },
     { "src": "/(.*)", "dest": "frontend/$1" }
   ]
